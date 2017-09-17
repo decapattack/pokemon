@@ -1,0 +1,14 @@
+<div class="box-login">
+<fieldset>
+<legend>Bem-vindo ao Pokemon Arena</legend>
+    <form ng-controller="CadastrarController as cadCtrl" ng-submit="cadCtrl.cadastrar()" name="cadastrarForm">
+        <label for="login">Login</label>
+        <input type="text" id="login" name="login" ng-model="login" required>
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" ng-model="senha" required>
+        <label for="senha">Repetir a senha</label>
+        <input type="password" id="senhaCheck" name="senhaCheck" ng-model="senhaCheck" required>
+        <button type="submit" class="waves-effect waves-light btn blue darken-1">Cadastrar</button>
+    </form>
+</fieldset>
+</div>

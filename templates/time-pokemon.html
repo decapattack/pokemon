@@ -1,0 +1,152 @@
+<div ng-controller="TimeController as time">
+    <div class="div-principal row">
+        <div class="time-pokemon col s3">
+            <form class="pure-form pure-form-stacked" ng-submit="timeForm.$valid && time.buscarPokemon()" name="timeForm" novalidate>
+                <fieldset>
+                    <legend>Procure seu Pokèmon</legend>
+                    <label for="nomePokemon">Nome do seu pokèmon</label>
+                    <input id="nomePokemon" name="nomePokemon" type="text" ng-model="nomePokemon" placeholder="">
+
+                    <button type="submit" class="waves-effect waves-light btn blue darken-1">Buscar</button>
+                    <br>
+                    <br>
+                    <fieldset>
+                        <legend>Escolha seu Pokemon</legend>
+                        <div class="botoes-avancar-voltar">
+                            <button class="waves-effect waves-light btn blue darken-1" ng-if="pokeData.previous" ng-click="time.buscarPokemon(pokeData.previous)"><i class="fa fa-arrow-left"></i> Voltar</button>
+                            <button class="waves-effect waves-light btn blue darken-1" ng-if="pokeData.next" ng-click="time.buscarPokemon(pokeData.next)">Avancar <i class="fa fa-arrow-right" ></i></button>
+                        </div>
+                        <table class="bordered highlight tabela-seleciona-pokemon">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="pokemon in listaPokemons">
+                                <tr ng-click="time.selecionaPokemon(pokemon.name)">
+                                    <td>{{pokemon.name | capitalize}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </fieldset>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col s3">
+            <div ng-show="team.listPokemons.length > 0">
+                <fieldset>
+                    <legend>Pokemons no seu time</legend>
+                    <form ng-submit="listaPokemonForm.$valid && time.buscarMoves()" name="listaPokemonForm" novalidate>
+                        <input type="text" name="nomeTime" id="nomeTime" ng-model="nomeTime" placeholder="Nome do seu time">
+                    </form>
+                    <table class="bordered highlight">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nome</th>
+                                <th>Habilidades</th>
+                                <th>Excluir</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="pokemon in team.listPokemons">
+                            <tr>
+                                <td>{{pokemon.id}}</td>
+                                <td>{{pokemon.name | capitalize}}</td>
+                                <td><button class="waves-effect waves-light btn blue darken-1" ng-click="time.selecionarMove(pokemon)"><i class="fa fa-cog"></i> Editar</button></td>
+                                <td><button class="waves-effect waves-light btn red darken-1" ng-click="time.excluirPokemon(pokemon.id)"><i class="fa fa-trash"></i> Excluir</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="botao-salvar-time">
+                        <button class="waves-effect waves-light btn green darken-1" name="salvarTime" id="salvarTime" ng-click="time.salvarTime()"><i class="fa fa-floppy-o"></i> Salvar</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="col s3">
+            <div ng-show="pokemonMoves.id">
+                <form ng-submit="moveForm.$valid && time.buscarMoves()" name="moveForm" novalidate>
+                    <fieldset>
+                        <legend>Habilidades do seu Pokemon</legend>
+                        <label for="nomePokemon">Nome da habilidade</label>
+                        <input id="nomeMove" name="nomeMove" type="text" ng-model="nomeMove" placeholder="">
+
+                        <button type="submit" class="waves-effect waves-light btn blue darken-1">Buscar</button>
+                        <br>
+                        <br>
+                        <fieldset>
+                            <legend>Escolha uma habilidade</legend>
+                            <div class="botoes-avancar-voltar">
+                                <button class="waves-effect waves-light btn blue darken-1" ng-if="moveData.previous" ng-click="time.buscarMoves(moveData.previous)"><i class="fa fa-arrow-left"></i> Voltar</button>
+                                <button class="waves-effect waves-light btn blue darken-1" ng-if="moveData.next" ng-click="time.buscarMoves(moveData.next)">Avancar <i class="fa fa-arrow-right" ></i></button>
+                            </div>
+                            <table class="bordered highlight">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="move in listaMoves">
+                                    <tr ng-click="time.adicionaNovoMove(move)">
+                                        <td>{{move.name | capitalize}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </fieldset>
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+        <div class="col s3">
+            <div ng-show="pokemonMoves.id">
+                <fieldset>
+                    <legend>Habilidades do {{pokemonMoves.name | capitalize}}</legend>
+
+                    <table class="bordered highlight">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Excluir</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="move in pokemonMoves.moves">
+                            <tr>
+                                <td>{{move.name | capitalize}}</td>
+                                <td><button class="waves-effect waves-light btn red darken-1" ng-click="time.excluirMove(move)"><i class="fa fa-trash"></i> Excluir</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="botao-salvar-time">
+                        <button class="waves-effect waves-light btn green darken-1" ng-click="time.salvarHabilidades()"><i class="fa fa-floppy-o"></i> Salvar</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <fieldset>
+                <legend>Times</legend>
+                <table class="bordered highlight">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Editar</th>
+                            <th>Excluir</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="tm in teams">
+                        <tr>
+                            <td>{{tm.name | capitalize}}</td>
+                            <td><button class="waves-effect waves-light btn blue darken-1" ng-click="time.editarTime(tm)"><i class="fa fa-cog"></i> Editar</button></td>
+                            <td><button class="waves-effect waves-light btn red darken-1" ng-click="time.excluirTime(tm)"><i class="fa fa-trash"></i> Excluir</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</div>

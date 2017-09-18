@@ -20,3 +20,5 @@ Vá, pela linha de comando, até a pasta raiz de onde o projeto foi clonado ou d
 Inicie o servidor local com o comando: http-server -c-1 (o sufixo -c-1 é para desativar o cache do servidor).O servidor vai, automaticamente, iniciar em http://localhost:8080
 
 Abra o browser e conecte-se em localhost:8080.
+
+Alguns scripts são de CDN, portanto, conexão com a internet é obrigatória.
